@@ -5,7 +5,13 @@ const app = express();
 
 
 app.get('/', function(req, res) {
-    res.sendFile();
+    //enviar documento html
+    res.sendFile('index.html', {
+        //especificar en donde se encuentra el archivo index.html
+        root: __dirname,
+    });
+    //responde con la ruta absoluta de nuestro archivo que se esta ejecutando
+    /* res.send(__dirname); */
 });
 
 app.listen(3000);
