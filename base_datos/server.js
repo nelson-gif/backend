@@ -11,7 +11,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let db = new sqlite3.Database('proyecto-backend');
 
 app.post('/pendientes', function(req, res) {
-    db.run("INSERT INTO tasks(description) VALUES('Hola mundo')");
+    //insertar los elementos que vengan desde una peticion http
+    /* db.run(`INSERT INTO tasks(description) VALUES('${req.body.description}')`); no es muy seguro ya que se expone a sqlinjecton de atacantes para evitar sqlinjection se hace lo siguietne*/
+    //lo que hace es limpiar los parametros enviados a la consulta, hace que lo que envien desde la peticion se inserte como un string aunque el atacante haya mandado comandos sql no se ejecutaran
+    //sustituira ? por defecto y cuando llegue un parametro ira quitando ? conforme se vaya agregando el parametro
+    db.run(`INSERT INTO tasks(description) VALUES(?)`, req.body.description);
     res.send('Insercion finalizada');
 });
 
